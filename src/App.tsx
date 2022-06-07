@@ -45,24 +45,20 @@ function App() {
 
     function addTasks(title: string) {
         let task = {
-            id: v1(),
-            title: title,
-            isDone: false,
+            id: v1(), title: title, isDone: false,
         }
         setTasks([task, ...tasks]);
     }
 
-    return (
-        <div className="App">
-            <TodoList
-                title={todolistTitle}
-                tasks={tasksForTodolist}
-                removeTasks={removeTasks}
-                changeFilter={changeFilter}
-                addTasks={addTasks}
-            />
-        </div>
-    );
+    return (<div className="App">
+        <TodoList
+            title={todolistTitle}
+            tasks={tasksForTodolist}
+            removeTasks={removeTasks}
+            changeFilter={changeFilter}
+            addTasks={addTasks}
+        />
+    </div>);
 }
 
 export default App;
