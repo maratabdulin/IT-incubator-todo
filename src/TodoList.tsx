@@ -1,60 +1,59 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {FilterValueType, TaskType} from "./App";
+import React, {useState} from 'react';
+import {FilterValuesType} from './App';
 import {Button} from "./components/Button";
+import {Input} from "./components/Input";
 
-type TodoListPropsType = {
+type TaskType = {
+    id: string
     title: string
-    tasks: TaskType[]
-    removeTasks: (id: string) => void
-    changeFilter: (value: FilterValueType) => void
-    addTasks: (title: string) => void
+    isDone: boolean
 }
 
-const TodoList: React.FC<TodoListPropsType> = (props) => {
-    const [title, setTitle] = useState<string>('');
-    const removeTasks = (taskId: string) => props.removeTasks(taskId);
+type PropsType = {
+    title: string
+    tasks: Array<TaskType>
+    removeTask: (taskId: string) => void
+    changeFilter: (value: FilterValuesType) => void
+    addTask: (title: string) => void
+}
 
-    const todoJSX = props.tasks.map((t) => {
-            return (<li key={t.id}>
-                <input type="checkbox" checked={t.isDone}/>
-                <span>{t.title}</span>
-                <Button text={'X'} callback={() => removeTasks(t.id)}/>
-            </li>)
-        }
-    )
+export function Todolist(props: PropsType) {
 
-    const addTask = () => {
-        props.addTasks(title);
-        setTitle('');
+    let [title, setTitle] = useState("")
+
+    const tzarChangeFilter = (valueType: FilterValuesType) => {
+        props.changeFilter(valueType);
     }
 
-    const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addTask()
-    const onChangeSetTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
-    const changeFilterHandler = (filter: FilterValueType) => {
-        props.changeFilter(filter);
+    const onClickHandler = (tId: string) => {
+        props.removeTask(tId);
     }
 
-    return (
+    const addTitleHandler = () => {
+        props.addTask(title);
+        setTitle('')
+    }
+
+    return <div>
+        <h3>{props.title}</h3>
+        <Input title={title} setTitle={setTitle} callBack={addTitleHandler}/>
+        <Button nameOfButton={'+'} callBack={addTitleHandler}/>
+
+        <ul>
+            {
+                props.tasks.map(t => {
+                    return <li key={t.id}>
+                        <input type="checkbox" checked={t.isDone}/>
+                        <span>{t.title}</span>
+                        <Button nameOfButton={'X'} callBack={() => onClickHandler(t.id)}/>
+                    </li>
+                })
+            }
+        </ul>
         <div>
-            <h3>{props.title}</h3>
-            <div>
-                <input
-                    value={title}
-                    onChange={onChangeSetTitle}
-                    onKeyDown={onKeyDownAddTask}
-                />
-                <Button text={'+'} callback={addTask}/>
-            </div>
-            <ul>
-                {todoJSX}
-            </ul>
-            <div>
-                <Button text={'All'} callback={() => changeFilterHandler('all')}/>
-                <Button text={'Active'} callback={() => changeFilterHandler('active')}/>
-                <Button text={'Completed'} callback={() => changeFilterHandler('completed')}/>
-            </div>
+            <Button nameOfButton={'All'} callBack={() => tzarChangeFilter('all')}/>
+            <Button nameOfButton={'Active'} callBack={() => tzarChangeFilter('active')}/>
+            <Button nameOfButton={'Completed'} callBack={() => tzarChangeFilter('completed')}/>
         </div>
-    );
-};
-
-export default TodoList;
+    </div>
+}
