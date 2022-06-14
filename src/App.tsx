@@ -15,16 +15,21 @@ function App() {
         {id: v1(), title: "GraphQL", isDone: false},
     ]);
 
-    function removeTask(id: string) {
+    const removeTask = (id: string) => {
         let filteredTasks = tasks.filter(t => t.id != id);
         setTasks(filteredTasks);
-    }
+    };
 
-    function addTask(title: string) {
+    const addTask = (title: string) => {
         let task = {id: v1(), title: title, isDone: false};
         let newTasks = [task, ...tasks];
         setTasks(newTasks);
+    };
+
+    const changeTaskStatus = (taskId: string, isDone: boolean) => {
+        setTasks(tasks.map(t => t.id === taskId ? {...t, isDone: isDone} : t))
     }
+
 
     let [filter, setFilter] = useState<FilterValuesType>("all");
 
@@ -47,7 +52,12 @@ function App() {
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
-                      addTask={addTask}/>
+                      addTask={addTask}
+                      filter={filter}
+                      changeTaskStatus={changeTaskStatus}
+
+            />
+
         </div>
     );
 }
