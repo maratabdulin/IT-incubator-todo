@@ -7,21 +7,18 @@
   margin-right: 50px;
 }
 
-.isDone {
-  text-decoration: line-through;
-  color: sandybrown;
-}
-
-.active {
-  background-color: aqua;
-  font-weight: 700;
-}
-
 .error {
-  border: 2px solid red;
-  outline: none;
+  border: red 1px solid;
 }
 
 .error-message {
   color: red;
+}
+
+.active-filter {
+  background-color: aquamarine;
+}
+
+.is-done {
+  opacity: 0.5;
 }
