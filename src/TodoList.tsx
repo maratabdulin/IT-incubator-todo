@@ -6,7 +6,6 @@ type TaskType = {
     title: string
     isDone: boolean
 }
-
 type PropsType = {
     title: string
     tasks: Array<TaskType>
@@ -17,7 +16,7 @@ type PropsType = {
     filter: FilterValuesType
 }
 
-export function Todolist(props: PropsType) {
+export const Todolist: React.FC<PropsType> = (props) => {
 
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
