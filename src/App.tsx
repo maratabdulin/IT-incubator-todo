@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import {v1} from 'uuid';
+import {Input} from "./components/Input";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
-type TodolistsType = {
+type TodoListsType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -15,7 +16,7 @@ function App() {
     let todolistID1 = v1();
     let todolistID2 = v1();
 
-    let [todolists, setTodolists] = useState<Array<TodolistsType>>([
+    let [todolists, setTodolists] = useState<Array<TodoListsType>>([
         {id: todolistID1, title: 'What to learn', filter: 'all'},
         {id: todolistID2, title: 'What to buy', filter: 'all'},
     ])
@@ -38,7 +39,7 @@ function App() {
     });
 
     function removeTodoList(todoListId: string) {
-        setTodolists(todolists.filter(el=> el.id !== todoListId))
+        setTodolists(todolists.filter(el => el.id !== todoListId))
         delete tasks[todoListId]
     }
 
@@ -51,8 +52,6 @@ function App() {
         setTasks({...tasks, [todoListId]: [newTask, ...tasks[todoListId]]})
     }
 
-
-
     function changeStatus(todoListId: string, taskId: string, isDone: boolean) {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(el => el.id === taskId ? {...el, isDone} : el)})
     }
@@ -61,9 +60,28 @@ function App() {
         setTodolists(todolists.map(el => el.id === todoListId ? {...el, filter: value} : el))
     }
 
+    function addTodoList(newTitle: string) {
+        let newTodoListId = v1();
+        let newTodoList: TodoListsType = {id: newTodoListId, title: newTitle, filter: 'all'};
+        setTodolists([newTodoList, ...todolists]);
+        setTasks({...tasks, [newTodoListId]: []})
+    }
+
+    function editTask(todoListId: string, taskId: string, newTitle: string) {
+        console.log(newTitle)
+        setTasks({
+            ...tasks,
+            [todoListId]: tasks[todoListId].map(el => el.id === taskId ? {...el, title: newTitle} : el)
+        })
+    }
+
+    function editTodoList(todoListId: string, newTitle: string) {
+        setTodolists(todolists.map(el=>el.id===todoListId ? {...el, title: newTitle}: el))
+    }
 
     return (
         <div className="App">
+            <Input callBack={addTodoList}/>
             {
                 todolists.map((tl) => {
                     let tasksForTodolist = tasks[tl.id];
@@ -86,6 +104,8 @@ function App() {
                             changeTaskStatus={changeStatus}
                             filter={tl.filter}
                             removeTodoList={removeTodoList}
+                            editTask={editTask}
+                            editTodoList={editTodoList}
                         />
                     )
                 })
