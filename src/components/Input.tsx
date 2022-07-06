@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button, IconButton, TextField} from "@mui/material";
+import {AddCircleOutline} from "@mui/icons-material";
 
 export type InputPropsType = {
     callBack: (newTitle: string) => void
@@ -31,13 +33,18 @@ export const Input = (props: InputPropsType) => {
 
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
+            <TextField
+                label={error}
+                value={title}
+                onChange={onChangeHandler}
+                onKeyPress={onKeyPressHandler}
+                variant="outlined"
+                error={!!error}
+                size={'small'}
             />
-            <button onClick={addTask}>+</button>
-            {error && <div className="error-message">{error}</div>}
+            <Button variant={'contained'} onClick={addTask} style={{height: '40px', width: '20px'}} color={'primary'}>
+                <AddCircleOutline/>
+            </Button>
         </div>
     );
 };
