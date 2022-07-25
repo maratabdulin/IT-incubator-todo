@@ -1,15 +1,9 @@
 import React, {ChangeEvent} from 'react';
-import {FilterValuesType} from './App';
+import {FilterValuesType, TaskType} from './App';
 import {Input} from "./components/Input";
 import {EditableSpan} from "./components/EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
-import {AddCircleOutline, Delete} from "@mui/icons-material";
-
-type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+import {Delete} from "@mui/icons-material";
 
 type PropsType = {
     title: string
